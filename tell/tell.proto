@@ -1,0 +1,46 @@
+syntax = "proto3";
+option go_package = "grpc-demo/tell";
+package tell_even_number;
+
+
+message Number {
+  int64 num = 1;
+}
+message NumberIsEven {
+  int64 num = 1;
+  bool is_even = 2;
+}
+
+message Numbers {
+  repeated Number nums = 1;
+}
+message NumberIsEvenList {
+  repeated NumberIsEven num_is_even_list = 1;
+}
+
+message HeartBeatPing {
+  string ping = 1;
+  optional string ping_note = 2;
+}
+message HeartBeatPong {
+  string pong = 1;
+  optional string pong_note = 2;
+}
+
+service TellEvenNumberService {
+  // unary
+  rpc IsEven(Number) returns (NumberIsEven) {}
+  rpc IsEvenUsingList(Numbers) returns (NumberIsEvenList) {}
+
+  // server side streaming
+  rpc IsEvenServerStreaming(Numbers) returns (stream NumberIsEven) {}
+
+  // client side streaming
+  rpc IsEvenClientStreaming(stream Number) returns (NumberIsEvenList) {}
+
+  // bidirectional streaming
+  rpc IsEvenBidiStreaming(stream Number) returns (stream NumberIsEven) {}
+
+  // test optional field
+  rpc HeartBeat(HeartBeatPing) returns (HeartBeatPong) {}
+}
