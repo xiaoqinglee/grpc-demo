@@ -28,7 +28,7 @@ func MapToProtoMessage(mp map[string]interface{}, m proto.Message) {
 }
 func MapToProtoMessage2(mp map[string]interface{}, m proto.Message) {
 	newStruct, _ := structpb.NewStruct(mp)
-	jsonBytes, _ := newStruct.MarshalJSON()
+	jsonBytes, _ := protojson.Marshal(newStruct)
 	_ = protojson.Unmarshal(jsonBytes, m)
 }
 
