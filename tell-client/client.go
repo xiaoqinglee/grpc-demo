@@ -2,12 +2,10 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/k0kubun/pp/v3"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/proto"
+	"grpc-demo/pkg"
 	pb "grpc-demo/tell"
 	"io"
 	"log"
@@ -20,7 +18,7 @@ func runFirst(client pb.TellEvenNumberServiceClient) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	PrintProtoMessage(pNumberIsEven)
+	pkg.PrintProtoMessage(pNumberIsEven)
 
 	req := &pb.Numbers{
 		Nums: nil,
@@ -34,7 +32,7 @@ func runFirst(client pb.TellEvenNumberServiceClient) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	PrintProtoMessage(pNumberIsEvenList)
+	pkg.PrintProtoMessage(pNumberIsEvenList)
 }
 
 func runSecond(client pb.TellEvenNumberServiceClient) {
@@ -58,7 +56,7 @@ func runSecond(client pb.TellEvenNumberServiceClient) {
 		if err != nil {
 			log.Fatalln(err)
 		}
-		PrintProtoMessage(pNumberIsEven)
+		pkg.PrintProtoMessage(pNumberIsEven)
 	}
 }
 
@@ -76,7 +74,7 @@ func runThird(client pb.TellEvenNumberServiceClient) {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	PrintProtoMessage(pNumberIsEvenList)
+	pkg.PrintProtoMessage(pNumberIsEvenList)
 }
 
 func runFourth(client pb.TellEvenNumberServiceClient) {
@@ -96,7 +94,7 @@ func runFourth(client pb.TellEvenNumberServiceClient) {
 			if err != nil {
 				log.Fatalln(err)
 			}
-			PrintProtoMessage(pNumIsEven)
+			pkg.PrintProtoMessage(pNumIsEven)
 		}
 	}()
 	for i := 0; i < 10; i++ {
@@ -158,11 +156,4 @@ func main() {
 	//runThird(client)
 	//runFourth(client)
 	runFifth(client)
-}
-
-func PrintProtoMessage(m proto.Message) {
-	jsonString := protojson.MarshalOptions{Multiline: true, EmitUnpopulated: true}.Format(m)
-	var data map[string]interface{}
-	json.Unmarshal([]byte(jsonString), &data)
-	pp.Println(data)
 }

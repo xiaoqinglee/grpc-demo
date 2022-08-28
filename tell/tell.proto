@@ -44,3 +44,17 @@ service TellEvenNumberService {
   // test optional field
   rpc HeartBeat(HeartBeatPing) returns (HeartBeatPong) {}
 }
+
+
+message NonOptionalFieldMessage {
+  int64 id = 1;
+  int64 id2 = 2;
+  string ping = 3;
+  string ping2 = 4;
+}
+message OptionalFieldMessage {
+  optional int64 id = 1;
+  optional int64 id2 = 2;
+  optional string ping = 3;
+  optional string ping2 = 4;
+}
