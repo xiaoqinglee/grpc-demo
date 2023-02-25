@@ -143,6 +143,7 @@ func runFifth(client pb.TellEvenNumberServiceClient) {
 }
 
 func main() {
+	//使用localhost没有问题
 	conn, err := grpc.Dial("localhost:5000",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithBlock())

@@ -44,6 +44,7 @@ func (server *TellEvenServer) IsEvenServerStreaming(req *pb.Numbers, stream pb.T
 		if err := stream.Send(respElem); err != nil {
 			return err
 		}
+		//通过 stream.Context() 感知 context 是否被取消了
 	}
 	return nil
 }
@@ -83,6 +84,7 @@ func (server *TellEvenServer) IsEvenBidiStreaming(stream pb.TellEvenNumberServic
 		if err := stream.Send(respElem); err != nil {
 			return err
 		}
+		//通过 stream.Context() 感知 context 是否被取消了
 	}
 }
 
@@ -113,7 +115,7 @@ func newBizServer() *TellEvenServer {
 }
 
 func main() {
-	listener, err := net.Listen("tcp", "localhost:5000")
+	listener, err := net.Listen("tcp", "0.0.0.0:5000")
 	if err != nil {
 		panic(err)
 	}
