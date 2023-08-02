@@ -56,3 +56,15 @@ func ProtoMessageNonZeroValueFields(m proto.Message) map[string]interface{} {
 func PrintProtoMessage(m proto.Message) {
 	pp.Println(ProtoMessageNonZeroValueFields(m))
 }
+
+// proto message and json encoding:
+//
+// Package protojson marshals and unmarshals protocol buffer messages as JSON format.
+// It follows the guide at https://protobuf.dev/programming-guides/proto3#json.
+//
+// This package produces a different output than the standard "encoding/json" package,
+// which does not operate correctly on protocol buffer messages.
+//
+// https://github.com/golang/protobuf/issues/1388#issuecomment-988167110
+// https://pkg.go.dev/google.golang.org/protobuf/encoding/protojson
+// https://protobuf.dev/programming-guides/proto3/#json
