@@ -9,6 +9,7 @@ import (
 	pb "grpc-demo/tell"
 	"io"
 	"log"
+	"time"
 )
 
 func runFirst(client pb.TellEvenNumberServiceClient) {
@@ -142,9 +143,71 @@ func runFifth(client pb.TellEvenNumberServiceClient) {
 
 }
 
+func runSixth(client pb.TellEvenNumberServiceClient) {
+	pNumberIsEven, err := client.IsEven(context.Background(), &pb.Number{
+		Num: 42,
+	})
+	if err != nil {
+		pp.Println(err)
+	} else {
+		pkg.PrintProtoMessage(pNumberIsEven)
+	}
+}
+
+func TestOffLineAndBackOnLineAgain() {
+	//"1:"
+	//map[string]interface {}{
+	//  "isEven": true,
+	//  "num":    "42",
+	//}
+	//"2:"
+	//&status.Error{
+	//  s: &status.Status{
+	//    s: &status.Status{
+	//      state: impl.MessageState{
+	//        NoUnkeyedLiterals: pragma.NoUnkeyedLiterals{},
+	//        DoNotCompare:      pragma.DoNotCompare{},
+	//        DoNotCopy:         pragma.DoNotCopy{},
+	//        atomicMessageInfo: (*impl.MessageInfo)(nil),
+	//      },
+	//      sizeCache:     0,
+	//      unknownFields: []uint8(nil),
+	//      Code:          14,
+	//      Message:       "connection error: desc = \"transport: Error while dialing dial tcp [::1]:5001: connect: connection refused\"",
+	//      Details:       []*anypb.Any(nil),
+	//    },
+	//  },
+	//}
+	//"3:"
+	//map[string]interface {}{
+	//  "isEven": true,
+	//  "num":    "42",
+	//}
+
+	conn, err := grpc.Dial("localhost:5001",
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		grpc.WithBlock())
+	if err != nil {
+		panic(err)
+	}
+	defer conn.Close()
+	client := pb.NewTellEvenNumberServiceClient(conn)
+
+	pp.Println("1:")
+	runSixth(client)
+	time.Sleep(time.Second * 15)
+
+	pp.Println("2:")
+	runSixth(client)
+	time.Sleep(time.Second * 15)
+
+	pp.Println("3:")
+	runSixth(client)
+}
+
 func main() {
 	//使用localhost没有问题
-	conn, err := grpc.Dial("localhost:5000",
+	conn, err := grpc.Dial("localhost:5001",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithBlock())
 	if err != nil {

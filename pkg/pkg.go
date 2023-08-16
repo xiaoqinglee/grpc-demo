@@ -54,7 +54,7 @@ func ProtoMessageNonZeroValueFields(m proto.Message) map[string]interface{} {
 }
 
 func PrintProtoMessage(m proto.Message) {
-	pp.Println(ProtoMessageNonZeroValueFields(m))
+	pp.Println(ProtoMessageToMap(m))
 }
 
 // proto message and json encoding:
